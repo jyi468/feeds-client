@@ -64,21 +64,21 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-client
-  .query({
-    query: gql`
-      query {
-        comments {
-          _id
-          email
-          eventId
-          name
-          text
-        }
-      }
-    `
-  })
-  .then(result => console.log(JSON.stringify(result)));
+// client
+//   .query({
+//     query: gql`
+//       query {
+//         comments {
+//           _id
+//           email
+//           eventId
+//           name
+//           text
+//         }
+//       }
+//     `
+//   })
+//   .then(result => console.log(JSON.stringify(result)));
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
