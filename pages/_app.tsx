@@ -78,7 +78,7 @@ client
       }
     `
   })
-  .then(result => console.log(result));
+  .then(result => console.log(JSON.stringify(result)));
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
