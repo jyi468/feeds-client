@@ -11,10 +11,10 @@ export enum ContentType {
 
 export const BoardContent = ({ url, type }: BoardContentProps) => {
     return (
-        <div>
+        <li>
             <div>{url}</div>
             <br/>
             <div>{type}</div>
-        </div>
+        </li>
     )
 }
