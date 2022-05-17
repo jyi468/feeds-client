@@ -1,6 +1,7 @@
 export type BoardContentProps = {
-    url: string;
     type: ContentType;
+    url?: string;
+    html?: string;
     index?: number;
 };
 
@@ -9,9 +10,10 @@ export enum ContentType {
     YOUTUBE = 'YOUTUBE',
 };
 
-export const BoardContent = ({ url, type }: BoardContentProps) => {
+export const BoardContent = ({ url, type, html }: BoardContentProps) => {
     return (
         <li>
+            <div dangerouslySetInnerHTML={{__html: html}}></div>
             <div>{url}</div>
             <br/>
             <div>{type}</div>

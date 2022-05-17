@@ -32,21 +32,10 @@ export const Board = ({ id, content }: BoardProps) => {
     // Make calls for embed data
     // https://stackoverflow.com/questions/40140149/use-async-await-with-array-map
     
-    const {data: embeds} = useSWR(tweets, multiFetcher);
-    console.log(JSON.stringify(embeds));
-
-    // console.log("Twitter Response", twitterContent);
-    // const tweetUserNames: any = {};
-    // twitterContent = tweets;
-    // if (twitterContent && twitterContent.includes) {
-    //     twitterContent.includes.users.forEach(user => {
-    //         tweetUserNames[user.id] = user.username;
-    //     });
-
-        
-    //     console.log(JSON.stringify(embeds))
-    // }
-    // console.log('Embed Response: ' + JSON.stringify(embeddedTwitterHtml));
+    const {data: twitterEmbeds} = useSWR(tweets, multiFetcher);
+    if (!boardContent.length) {
+        setBoardContent(twitterEmbeds);
+    }
     const initializeTwitterApi = async () => {
         
     };
