@@ -10,7 +10,7 @@ type BoardProps = {
 };
 
 export const Board = ({ id, content }: BoardProps) => {
-    const [boardContent, setBoardContent] = useState([]);
+    const [boardContent, setBoardContent] = useState();
     const fetcher = (url: string) => fetch(url).then((res) => res.json());
     const multiFetcher = (tweets: any) => {
         const tweetUserNames: any = {};
@@ -33,7 +33,7 @@ export const Board = ({ id, content }: BoardProps) => {
     // https://stackoverflow.com/questions/40140149/use-async-await-with-array-map
     
     const {data: twitterEmbeds} = useSWR(tweets, multiFetcher);
-    if (!boardContent.length) {
+    if (twitterEmbeds && !boardContent) {
         setBoardContent(twitterEmbeds);
     }
     const initializeTwitterApi = async () => {
@@ -46,7 +46,7 @@ export const Board = ({ id, content }: BoardProps) => {
              />
             <div>{id}</div>
             <ul>
-                {boardContent.map((content, index) => {
+                {boardContent && boardContent.map((content, index) => {
                     return <BoardContent key={index} {...content}/>;
                 })}
             </ul>
