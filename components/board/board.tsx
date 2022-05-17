@@ -12,6 +12,14 @@ type BoardProps = {
 export const Board = ({ id, content }: BoardProps) => {
     const [boardContent, setBoardContent] = useState([]);
     const fetcher = (url: string) => fetch(url).then((res) => res.json());
+    const multiFetcher = (tweets: any) => {
+        const tweetUserNames: any = {};
+        tweets.includes.users.forEach(user => {
+            tweetUserNames[user.id] = user.username;
+        });
+        const urls = tweets.data.map(tweet => `/api/twitter/oEmbed?id=${tweet.id}&username=${tweetUserNames[tweet.author_id]}`);
+        return Promise.all(urls.map(url => fetcher(url)))
+    };
 
     let twitterContent: any = [];
     let embeddedTwitterHtml: any = [];
@@ -20,30 +28,25 @@ export const Board = ({ id, content }: BoardProps) => {
         'tweet.fields': 'entities',
         'user.fields': 'name',
     };
-    const {data, error} = useSWR(`/api/twitter?${new URLSearchParams(queryParams).toString()}`, fetcher);
+    const {data: tweets, error} = useSWR(`/api/twitter?${new URLSearchParams(queryParams).toString()}`, fetcher);
+    // Make calls for embed data
+    // https://stackoverflow.com/questions/40140149/use-async-await-with-array-map
+    
+    const {data: embeds} = useSWR(tweets, multiFetcher);
+    console.log(JSON.stringify(embeds));
 
-    if (data) {
-        // console.log("Twitter Response", twitterContent);
-        const tweetUserNames: any = {};
-        twitterContent = data;
-        if (twitterContent.includes) {
-            twitterContent.includes.users.forEach(user => {
-                tweetUserNames[user.id] = user.username;
-            });
-            const multiFetcher = (...urls: string[]) => Promise.all(urls.map(url => fetcher(url)));
+    // console.log("Twitter Response", twitterContent);
+    // const tweetUserNames: any = {};
+    // twitterContent = tweets;
+    // if (twitterContent && twitterContent.includes) {
+    //     twitterContent.includes.users.forEach(user => {
+    //         tweetUserNames[user.id] = user.username;
+    //     });
 
-            // Make calls for embed data
-            // https://stackoverflow.com/questions/40140149/use-async-await-with-array-map
-            const urls = twitterContent.data.map(tweet => `/api/twitter/oEmbed?id=${tweet.id}&username=${tweetUserNames[tweet.author_id]}`);
-            const {data} = useSWR(urls, multiFetcher);
-            console.log(JSON.stringify(data))
-        }
-        // console.log('Embed Response: ' + JSON.stringify(embeddedTwitterHtml));
-        const result = {
-            twitterContent,
-            embeddedTwitterHtml,
-        };
-    }
+        
+    //     console.log(JSON.stringify(embeds))
+    // }
+    // console.log('Embed Response: ' + JSON.stringify(embeddedTwitterHtml));
     const initializeTwitterApi = async () => {
         
     };
