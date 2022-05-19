@@ -10,7 +10,9 @@ type BoardProps = {
 };
 
 export const Board = ({ id, content }: BoardProps) => {
-    const [boardContent, setBoardContent] = useState();
+    const [boardContent, setBoardContent] = useState<[]>();
+    const [isTwitterLoaded, setIsTwitterLoaded] = useState(false);
+
     const fetcher = (url: string) => fetch(url).then((res) => res.json());
     const multiFetcher = (tweets: any) => {
         const tweetUserNames: any = {};
@@ -20,36 +22,41 @@ export const Board = ({ id, content }: BoardProps) => {
         const urls = tweets.data.map(tweet => `/api/twitter/oEmbed?id=${tweet.id}&username=${tweetUserNames[tweet.author_id]}`);
         return Promise.all(urls.map(url => fetcher(url)))
     };
-
-    let twitterContent: any = [];
-    let embeddedTwitterHtml: any = [];
     const queryParams = {
         query: 'will smith',
         'tweet.fields': 'entities',
         'user.fields': 'name',
     };
-    const {data: tweets, error} = useSWR(`/api/twitter?${new URLSearchParams(queryParams).toString()}`, fetcher);
+    const { data: tweets, error } = useSWR(`/api/twitter?${new URLSearchParams(queryParams).toString()}`, fetcher);
     // Make calls for embed data
     // https://stackoverflow.com/questions/40140149/use-async-await-with-array-map
-    
-    const {data: twitterEmbeds} = useSWR(tweets, multiFetcher);
+
+    const { data: twitterEmbeds } = useSWR(tweets, multiFetcher);
     if (twitterEmbeds && !boardContent) {
         setBoardContent(twitterEmbeds);
     }
-    const initializeTwitterApi = async () => {
-        
+
+    /**
+     * Required for Twitter embeds to work
+     */
+    const initializeTwitterApi = () => {
+        global.twttr.widgets.load();
+        global.twttr.ready(() => {
+            setIsTwitterLoaded(true);
+        });
     };
     return (
-        <div>
-            <Script src="https://platform.twitter.com/widgets.js" strategy="lazyOnload"
+        <>
+            <Script
+                    src="https://platform.twitter.com/widgets.js"
                     onLoad={initializeTwitterApi}
-             />
+            ></Script>
             <div>{id}</div>
             <ul>
-                {boardContent && boardContent.map((content, index) => {
-                    return <BoardContent key={index} {...content}/>;
+                {isTwitterLoaded && boardContent && boardContent.map((content, index) => {
+                    return <BoardContent key={index} {...content} />;
                 })}
             </ul>
-        </div>
+        </>
     );
 };

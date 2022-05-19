@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import Script from 'next/script';
 import type { AppProps } from 'next/app'
 import * as Realm from 'realm-web';
 import {
@@ -82,9 +83,12 @@ const client = new ApolloClient({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ApolloProvider client={client}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <>
+      <ApolloProvider client={client}>
+        <Component {...pageProps} />
+      </ApolloProvider>
+    </>
+
   );
 }
 
