@@ -9,7 +9,9 @@ class MyDocument extends Document {
     render() {
         return (
             <Html>
-                <Head />
+                <Head>
+                    <script src="/scripts/widgets.js"></script>
+                </Head>
                 <body>
                     <Main />
                     <NextScript />

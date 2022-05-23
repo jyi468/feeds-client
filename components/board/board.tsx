@@ -1,5 +1,5 @@
 import Script from 'next/script';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 
 import { BoardContentProps, BoardContent } from './boardContent';
@@ -11,7 +11,7 @@ type BoardProps = {
 
 export const Board = ({ id, content }: BoardProps) => {
     const [boardContent, setBoardContent] = useState<[]>();
-    const [isTwitterLoaded, setIsTwitterLoaded] = useState(false);
+    const [isTwitterLoaded, setIsTwitterLoaded] = useState(true);
 
     const fetcher = (url: string) => fetch(url).then((res) => res.json());
     const multiFetcher = (tweets: any) => {
@@ -36,21 +36,44 @@ export const Board = ({ id, content }: BoardProps) => {
         setBoardContent(twitterEmbeds);
     }
 
+    // useEffect(() => {
+    //     if (global.twttr && global.twttr.widgets) {
+    //         global.twttr.widgets.load();
+    //         global.twttr.ready(() => {
+    //             setIsTwitterLoaded(true);
+    //         });
+    //     }
+    // }, [global.twttr]);
+
     /**
      * Required for Twitter embeds to work
      */
     const initializeTwitterApi = () => {
-        global.twttr.widgets.load();
-        global.twttr.ready(() => {
-            setIsTwitterLoaded(true);
-        });
+
     };
     return (
         <>
-            <Script
+            {/* <Script
                     src="https://platform.twitter.com/widgets.js"
                     onLoad={initializeTwitterApi}
-            ></Script>
+            >
+                {`window.twttr = (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0],
+                    t = window.twttr || {};
+                if (d.getElementById(id)) return t;
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "https://platform.twitter.com/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs);
+
+                t._e = [];
+                t.ready = function(f) {
+                    t._e.push(f);
+                };
+
+                return t;
+                }(document, "script", "twitter-wjs"));`}
+            </Script> */}
             <div>{id}</div>
             <ul>
                 {isTwitterLoaded && boardContent && boardContent.map((content, index) => {

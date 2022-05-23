@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 export type BoardContentProps = {
     type: ContentType;
     url?: string;
@@ -11,9 +13,16 @@ export enum ContentType {
 };
 
 export const BoardContent = ({ url, type, html }: BoardContentProps) => {
+    const twitterBlockRef = useRef();
+
+    useEffect(() => {
+        if (global.twttr && global.twttr.widgets) {
+            global.twttr.widgets.load(twitterBlockRef.current);
+        }
+    }, [global.twttr]);
     return (
         <li>
-            <div dangerouslySetInnerHTML={{__html: html}}></div>
+            <div ref={twitterBlockRef} dangerouslySetInnerHTML={{__html: html}}></div>
             <div>{url}</div>
             <br/>
             <div>{type}</div>
