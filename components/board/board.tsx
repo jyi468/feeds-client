@@ -35,51 +35,11 @@ export const Board = ({ id, content }: BoardProps) => {
     if (twitterEmbeds && !boardContent) {
         setBoardContent(twitterEmbeds);
     }
-
-    // useEffect(() => {
-    //     if (global.twttr && global.twttr.widgets) {
-    //         global.twttr.widgets.load();
-    //         global.twttr.ready(() => {
-    //             setIsTwitterLoaded(true);
-    //         });
-    //     }
-    // }, [global.twttr]);
-
-    /**
-     * Required for Twitter embeds to work
-     */
-    const initializeTwitterApi = () => {
-
-    };
     return (
-        <>
-            {/* <Script
-                    src="https://platform.twitter.com/widgets.js"
-                    onLoad={initializeTwitterApi}
-            >
-                {`window.twttr = (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0],
-                    t = window.twttr || {};
-                if (d.getElementById(id)) return t;
-                js = d.createElement(s);
-                js.id = id;
-                js.src = "https://platform.twitter.com/widgets.js";
-                fjs.parentNode.insertBefore(js, fjs);
-
-                t._e = [];
-                t.ready = function(f) {
-                    t._e.push(f);
-                };
-
-                return t;
-                }(document, "script", "twitter-wjs"));`}
-            </Script> */}
-            <div>{id}</div>
-            <ul>
-                {isTwitterLoaded && boardContent && boardContent.map((content, index) => {
-                    return <BoardContent key={index} {...content} />;
-                })}
-            </ul>
-        </>
+        <ul>
+            {isTwitterLoaded && boardContent && boardContent.map((content, index) => {
+                return <BoardContent key={index} {...content} />;
+            })}
+        </ul>
     );
 };

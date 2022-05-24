@@ -1,4 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import useOnScreen from "../../utils/hooks";
 
 export type BoardContentProps = {
     type: ContentType;
@@ -14,18 +16,20 @@ export enum ContentType {
 
 export const BoardContent = ({ url, type, html }: BoardContentProps) => {
     const twitterBlockRef = useRef();
+    const isOnScreen = useOnScreen(twitterBlockRef);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        if (global.twttr && global.twttr.widgets) {
+        if (global.twttr.widgets && isOnScreen && !isLoaded) {
             global.twttr.widgets.load(twitterBlockRef.current);
+            setIsLoaded(true);
         }
-    }, [global.twttr]);
+    }, [isOnScreen]);
+
     return (
-        <li>
-            <div ref={twitterBlockRef} dangerouslySetInnerHTML={{__html: html}}></div>
-            <div>{url}</div>
-            <br/>
-            <div>{type}</div>
+        <li
+         ref={twitterBlockRef} 
+         dangerouslySetInnerHTML={{__html: html}}>
         </li>
     )
 }
