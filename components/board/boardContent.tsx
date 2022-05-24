@@ -20,7 +20,7 @@ export const BoardContent = ({ url, type, html }: BoardContentProps) => {
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        if (global.twttr.widgets && isOnScreen && !isLoaded) {
+        if (twttr.widgets && isOnScreen && !isLoaded) {
             global.twttr.widgets.load(twitterBlockRef.current);
             setIsLoaded(true);
         }

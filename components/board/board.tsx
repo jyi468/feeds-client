@@ -10,16 +10,16 @@ type BoardProps = {
 };
 
 export const Board = ({ id, content }: BoardProps) => {
-    const [boardContent, setBoardContent] = useState<[]>();
+    const [boardContent, setBoardContent] = useState<any[]>();
     const [isTwitterLoaded, setIsTwitterLoaded] = useState(true);
 
     const fetcher = (url: string) => fetch(url).then((res) => res.json());
     const multiFetcher = (tweets: any) => {
         const tweetUserNames: any = {};
-        tweets.includes.users.forEach(user => {
+        tweets.includes.users.forEach((user: any) => {
             tweetUserNames[user.id] = user.username;
         });
-        const urls = tweets.data.map(tweet => `/api/twitter/oEmbed?id=${tweet.id}&username=${tweetUserNames[tweet.author_id]}`);
+        const urls = tweets.data.map((tweet: any) => `/api/twitter/oEmbed?id=${tweet.id}&username=${tweetUserNames[tweet.author_id]}`);
         return Promise.all(urls.map(url => fetcher(url)))
     };
     const queryParams = {

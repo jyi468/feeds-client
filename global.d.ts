@@ -1,3 +1,7 @@
-declare global {
-    twttr: any;
+declare namespace global {
+    let twttr: any;
+}
+
+declare namespace twttr {
+
 }
