@@ -2,28 +2,28 @@ import Script from 'next/script';
 import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 
-import { BoardContentProps, BoardContent } from './boardContent';
+import { ScrollerContentProps, ScrollerContent } from './scrollerContent';
 
-type BoardProps = {
+type ScrollerProps = {
     id: string;
-    content: BoardContentProps[];
+    content: ScrollerContentProps[];
 };
 
-export const Board = ({ id, content }: BoardProps) => {
-    const [boardContent, setBoardContent] = useState<any[]>();
+export const Scroller = ({ id, content }: ScrollerProps) => {
+    const [scrollerContent, setScrollerContent] = useState<[]>();
     const [isTwitterLoaded, setIsTwitterLoaded] = useState(true);
 
     const fetcher = (url: string) => fetch(url).then((res) => res.json());
     const multiFetcher = (tweets: any) => {
         const tweetUserNames: any = {};
-        tweets.includes.users.forEach((user: any) => {
+        tweets.includes.users.forEach(user => {
             tweetUserNames[user.id] = user.username;
         });
-        const urls = tweets.data.map((tweet: any) => `/api/twitter/oEmbed?id=${tweet.id}&username=${tweetUserNames[tweet.author_id]}`);
+        const urls = tweets.data.map(tweet => `/api/twitter/oEmbed?id=${tweet.id}&username=${tweetUserNames[tweet.author_id]}`);
         return Promise.all(urls.map(url => fetcher(url)))
     };
     const queryParams = {
-        query: 'bitcoin',
+        query: 'will smith',
         'tweet.fields': 'entities',
         'user.fields': 'name',
     };
@@ -32,14 +32,18 @@ export const Board = ({ id, content }: BoardProps) => {
     // https://stackoverflow.com/questions/40140149/use-async-await-with-array-map
 
     const { data: twitterEmbeds } = useSWR(tweets, multiFetcher);
-    if (twitterEmbeds && !boardContent) {
-        setBoardContent(twitterEmbeds);
+    if (twitterEmbeds && !scrollerContent) {
+        setScrollerContent(twitterEmbeds);
     }
+
     return (
-        <ul>
-            {isTwitterLoaded && boardContent && boardContent.map((content, index) => {
-                return <BoardContent key={index} {...content} />;
-            })}
-        </ul>
+        <>
+            <div>{id}</div>
+            <ul>
+                {scrollerContent && scrollerContent.map((content, index) => {
+                    return <ScrollerContent key={index} {...content} />;
+                })}
+            </ul>
+        </>
     );
 };

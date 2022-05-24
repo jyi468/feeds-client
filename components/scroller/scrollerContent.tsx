@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import useOnScreen from "../../utils/hooks";
 
-export type BoardContentProps = {
+export type ScrollerContentProps = {
     type: ContentType;
     url?: string;
     html?: string;
@@ -14,13 +14,13 @@ export enum ContentType {
     YOUTUBE = 'YOUTUBE',
 };
 
-export const BoardContent = ({ url, type, html }: BoardContentProps) => {
+export const ScrollerContent = ({ url, type, html }: ScrollerContentProps) => {
     const twitterBlockRef = useRef();
     const isOnScreen = useOnScreen(twitterBlockRef);
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        if (twttr.widgets && isOnScreen && !isLoaded) {
+        if (global.twttr.widgets && isOnScreen && !isLoaded) {
             global.twttr.widgets.load(twitterBlockRef.current);
             setIsLoaded(true);
         }

@@ -2,11 +2,11 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { Board } from '../components/board/board'
-import { ContentType } from '../components/board/boardContent'
+import { Scroller } from '../components/scroller/scroller'
+import { ContentType } from '../components/scroller/scrollerContent'
 
 const Home: NextPage = () => {
-  const boardContent = [{ url: 'url1', type: ContentType.TWITTER }, { url: 'url2', type: ContentType.YOUTUBE }];
+  const scrollerContent = [{ url: 'url1', type: ContentType.TWITTER }, { url: 'url2', type: ContentType.YOUTUBE }];
   return (
     <div className={styles.container}>
       <Head>
@@ -16,10 +16,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className="text-3xl font-bold underline">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-        <Board id={'1'} content={boardContent}></Board>
+        <Scroller id={'1'} content={scrollerContent}></Scroller>
       </main>
 
       <footer className={styles.footer}>
