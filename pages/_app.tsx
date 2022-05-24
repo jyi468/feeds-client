@@ -10,6 +10,7 @@ import {
   useQuery,
 } from "@apollo/client";
 import gql from 'graphql-tag';
+import Navbar from '../components/navigation/navbar';
 
 
 // Connect to your MongoDB Realm app
@@ -83,12 +84,10 @@ const client = new ApolloClient({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <ApolloProvider client={client}>
+    <ApolloProvider client={client}>
+        <Navbar></Navbar>
         <Component {...pageProps} />
-      </ApolloProvider>
-    </>
-
+    </ApolloProvider>
   );
 }
 

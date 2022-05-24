@@ -27,9 +27,9 @@ export const ScrollerContent = ({ url, type, html }: ScrollerContentProps) => {
     }, [isOnScreen]);
 
     return (
-        <li
-         ref={twitterBlockRef} 
-         dangerouslySetInnerHTML={{__html: html}}>
-        </li>
+        <div className='grid grid-cols-1 place-content-center'
+            ref={twitterBlockRef}
+            dangerouslySetInnerHTML={{ __html: html }}>
+        </div>
     )
 }

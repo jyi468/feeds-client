@@ -38,12 +38,9 @@ export const Scroller = ({ id, content }: ScrollerProps) => {
 
     return (
         <>
-            <div>{id}</div>
-            <ul>
-                {scrollerContent && scrollerContent.map((content, index) => {
-                    return <ScrollerContent key={index} {...content} />;
-                })}
-            </ul>
+            {scrollerContent && scrollerContent.map((content, index) => {
+                return <ScrollerContent key={index} {...content} />;
+            })}
         </>
     );
 };

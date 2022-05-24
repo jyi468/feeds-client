@@ -8,7 +8,8 @@ class MyDocument extends Document {
 
     render() {
         return (
-            <Html>
+            // TODO: Add theme selector
+            <Html data-theme="light">
                 <Head>
                     <script src="/scripts/widgets.js"></script>
                 </Head>
