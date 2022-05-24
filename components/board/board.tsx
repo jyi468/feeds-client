@@ -23,7 +23,7 @@ export const Board = ({ id, content }: BoardProps) => {
         return Promise.all(urls.map(url => fetcher(url)))
     };
     const queryParams = {
-        query: 'will smith',
+        query: 'bitcoin',
         'tweet.fields': 'entities',
         'user.fields': 'name',
     };
