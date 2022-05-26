@@ -15,7 +15,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container mx-auto ">
+      <main className="grid container place-content-center">
         <Scroller id={'1'} content={scrollerContent}></Scroller>
       </main>
 

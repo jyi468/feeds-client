@@ -1,4 +1,5 @@
 import { PlusCircleIcon } from '@heroicons/react/solid'
+import Link from 'next/link';
 
 const Navbar = () => {
     return (
@@ -8,7 +9,9 @@ const Navbar = () => {
                     <a className="btn btn-ghost normal-case text-xl">Feeds</a>
                 </div>
                 <div className="navbar-center">
-                    <a className="btn btn-primary">Create <PlusCircleIcon className="h-5 w-5 pl-1" /></a>
+                    <Link href="/feeds/create">
+                        <a className="btn btn-primary">Create <PlusCircleIcon className="h-5 w-5 pl-1" /></a>
+                    </Link>
                 </div>
                 <div className="navbar-end">
                     <a className="btn">Get started</a>
