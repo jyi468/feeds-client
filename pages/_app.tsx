@@ -85,8 +85,8 @@ const client = new ApolloClient({
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
-        <Navbar></Navbar>
-        <Component {...pageProps} />
+      <Navbar></Navbar>
+      <Component {...pageProps} />
     </ApolloProvider>
   );
 }
