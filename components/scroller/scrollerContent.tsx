@@ -21,15 +21,26 @@ export const ScrollerContent = ({ url, type, html }: ScrollerContentProps) => {
 
     useEffect(() => {
         if (global.twttr.widgets && isOnScreen && !isLoaded) {
+            // TODO: Optimize Twitter events with Redux on load. 
+            // This includes the work to show a single spinner while anything on screen is still loading.
+            global.twttr.events.bind(
+                'rendered',
+                function (event) {
+                    if (twitterBlockRef.current?.firstChild === event.target) {
+                        setIsLoaded(true);
+                    }
+                }
+            );
             global.twttr.widgets.load(twitterBlockRef.current);
-            setIsLoaded(true);
         }
     }, [isOnScreen]);
-
+    
     return (
-        <div className='grid grid-cols-1 place-content-center'
-            ref={twitterBlockRef}
-            dangerouslySetInnerHTML={{ __html: html }}>
-        </div>
+        <>
+            <div className={`grid grid-cols-1 place-content-center ${!isLoaded && 'invisible'}`}
+                ref={twitterBlockRef}
+                dangerouslySetInnerHTML={{ __html: html }}>
+            </div>
+        </>
     )
 }
