@@ -1,18 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import TwitterAPI from "../../../utils/twitterApi";
 
-const TwitterApi = async (req: NextApiRequest, res: NextApiResponse) => {
+const TwitterApiRoute = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const url = 'https://api.twitter.com/2/tweets/search/recent?query=bitcoin&user.fields=username&expansions=author_id';
         // const params = request.params;
-        const fetchParams = {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${process.env.TWITTER_BEARER_TOKEN}`,
-                'Accept': '*/*',
-            }
-        }
-        const response = await fetch(url, fetchParams);
-        const twitterContent = await response.json();
+        const twitterContent = await TwitterAPI.searchTweets();
 
         res.status(200).json(twitterContent);
     } catch (error: any) {
@@ -20,4 +12,4 @@ const TwitterApi = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 }
 
-export default TwitterApi;
+export default TwitterApiRoute;
