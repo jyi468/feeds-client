@@ -37,7 +37,7 @@ export const ScrollerContent = ({ url, type, html }: ScrollerContentProps) => {
     
     return (
         <>
-            <div className={`grid grid-cols-1 place-content-center ${!isLoaded && 'invisible'}`}
+            <div className={`${!isLoaded && 'invisible'}`}
                 ref={twitterBlockRef}
                 dangerouslySetInnerHTML={{ __html: html }}>
             </div>
