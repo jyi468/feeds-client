@@ -1,7 +1,5 @@
-declare namespace global {
-    let twttr: any;
+declare global {
+    var twttr: any;
 }
 
-declare namespace twttr {
-
-}
+export {};
