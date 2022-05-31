@@ -17,12 +17,12 @@ const CreateFeed = () => {
             <div className="card mx-4 my-8 bg-base-100 shadow-xl">
                 <figure><img src="https://api.lorem.space/image/shoes?w=400&h=225" alt="Shoes" /></figure>
                 <div className="card-body">
-                    <Link href="/feeds/create/list">
-                        <h2 className="card-title">List</h2>
-                    </Link>
+                    <h2 className="card-title">List</h2>
                     <p>Add your links one by one, using list rows. Recommended for most users.</p>
                     <div className="card-actions justify-end">
-                        <button className="btn btn-primary">Create List</button>
+                        <Link href="/feeds/create/list">
+                            <button className="btn btn-primary">Create List</button>
+                        </Link>
                     </div>
                 </div>
             </div>
