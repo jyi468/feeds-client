@@ -13,10 +13,10 @@ const SortableDynamic = dynamic(() => import('@shopify/draggable/lib/sortable').
         if (containers.length === 0) {
             return false;
         }
-        const sortable = new Sortable(containers, {
-            draggable: 'tr',
-            handle: '.checkbox',
-        });
+        // const sortable = new Sortable(containers, {
+        //     draggable: 'tr',
+        //     handle: '.checkbox',
+        // });
     }
 ), { ssr: false });
 
@@ -37,17 +37,23 @@ const CreateList = ({data} : CreateListProps) => {
     ]
     data = mockRows;
     const [rows, setRows] = useState(data ?? []);
+    const [isAllChecked, setIsAllChecked] = useState(false);
 
-    const handleOnCheck = (event: any) => {
-
+    const handleOnAllChecked = (event: any) => {
+        setIsAllChecked(event.target.checked);
+        setRows(rows.map(row => {
+            row.isChecked = event.target.checked;
+            return row;
+        }));
     };
 
-    const handleOnInputChange = ({row, index, event}: any) => {
-        const oldRows = rows;
-        const oldRow = oldRows[index];
-        const newRow = {...oldRow, [event.target.name]: event.target.value};
-        oldRows[index] = newRow;
-        setRows(oldRows);
+    const handleOnCheck = ({index, event}: any) => {
+        rows[index].isChecked = event.target.checked;
+        setRows([...rows]);
+    };
+
+    const handleOnInputChange = () => {
+        setRows([...rows]);
     };
     return (
         <>
@@ -58,9 +64,7 @@ const CreateList = ({data} : CreateListProps) => {
                     <thead>
                         <tr>
                             <th>
-                                <label>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
+                                <input type="checkbox" className="checkbox" name="checkAll" checked={isAllChecked} onChange={handleOnAllChecked}/>
                             </th>
                             <th>URL</th>
                             <th></th>
@@ -70,9 +74,7 @@ const CreateList = ({data} : CreateListProps) => {
                         {rows.map((row, index) => (
                             <tr key={index}>
                                 <th>
-                                    <label>
-                                        <input name="isChecked" type="checkbox" className="checkbox" checked={row.isChecked} onChange={handleOnCheck}/>
-                                    </label>
+                                    <input name={`check-${index}`} type="checkbox" className="checkbox" checked={row.isChecked} onChange={(event) => handleOnCheck({index, event})}/>
                                 </th>
                                 <td>
                                     <div className="flex">
@@ -81,7 +83,7 @@ const CreateList = ({data} : CreateListProps) => {
                                                 <img src="/tailwind-css-component-profile-2@56w.png" alt="Avatar Tailwind CSS Component" />
                                             </div>
                                         </div> */}
-                                        <input name="url" type="text" className="input input-bordered w-full max-w-xs" value={row.url} onChange={(event) => handleOnInputChange({row, index, event})}/>
+                                        <input name="url" type="text" className="input input-bordered w-full max-w-xs" value={row.url} onChange={(event) => handleOnInputChange()}/>
                                     </div>
                                 </td>
                             </tr>
