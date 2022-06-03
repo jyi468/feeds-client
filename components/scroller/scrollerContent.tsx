@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import useOnScreen from "../../utils/hooks";
 
 export type ScrollerContentProps = {
+    id: string;
     type: ContentType;
     url?: string;
     html?: string;
@@ -14,28 +15,27 @@ export enum ContentType {
     YOUTUBE = 'YOUTUBE',
 };
 
-export const ScrollerContent = ({ url, type, html }: ScrollerContentProps) => {
+export const ScrollerContent = ({ id, url, type, html }: ScrollerContentProps) => {
     const embedRef = useRef();
     const isOnScreen = useOnScreen(embedRef);
     const [isTwitterLoaded, setIsLoaded] = useState(false);
-    
-    if (type === ContentType.TWITTER) {
-        useEffect(() => {
-            if (global.twttr.widgets && isOnScreen && !isTwitterLoaded) {
-                // TODO: Optimize Twitter events with Redux on load. 
-                // This includes the work to show a single spinner while anything on screen is still loading.
-                global.twttr.events.bind(
-                    'rendered',
-                    function (event) {
-                        if (embedRef.current?.firstChild === event.target) {
-                            setIsLoaded(true);
-                        }
+
+    useEffect(() => {
+        if (ContentType.TWITTER && global.twttr?.widgets && isOnScreen && !isTwitterLoaded) {
+            // TODO: Optimize Twitter events with Redux on load. 
+            // This includes the work to show a single spinner while anything on screen is still loading.
+            global.twttr.events.bind(
+                'rendered',
+                function (event) {
+                    if (embedRef.current?.firstChild === event.target) {
+                        setIsLoaded(true);
                     }
-                );
-                global.twttr.widgets.load(embedRef.current);
-            }
-        }, [isOnScreen]);
-    }
+                }
+            );
+            global.twttr.widgets.load(embedRef.current);
+        }
+    }, [isOnScreen]);
+
 
     const renderContent = () => {
         if (html) {
@@ -43,6 +43,12 @@ export const ScrollerContent = ({ url, type, html }: ScrollerContentProps) => {
                 ref={embedRef}
                 dangerouslySetInnerHTML={{ __html: html }}>
             </div>);
+        } else {
+            switch (type) {
+                case ContentType.YOUTUBE:
+                    // TODO: Add Redux for APIs loaded.
+                    return <iframe id={id} src={url}/>;
+            }
         }
     }
     

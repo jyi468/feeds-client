@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { Scroller } from '../components/scroller/scroller'
-import { ContentType } from '../components/scroller/scrollerContent'
+import { ContentType, ScrollerContentProps } from '../components/scroller/scrollerContent'
 import TwitterAPI from '../utils/twitterApi'
 
 export async function getServerSideProps() {
@@ -27,10 +27,11 @@ type HomeProps = {
 }
 
 const Home: NextPage = ({ twitterOEmbedData }: HomeProps) => {
-  const twitterContent = twitterOEmbedData.map((tweetData: any) => {
-    tweetData.type = ContentType.TWITTER;
-    return tweetData;
-  });
+  // const twitterContent = twitterOEmbedData.map((tweetData: any) => {
+  //   tweetData.type = ContentType.TWITTER;
+  //   return tweetData;
+  // });
+  const twitterContent: ScrollerContentProps[] = [];
 
   const youtubeContent = [{
     url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
@@ -50,7 +51,7 @@ const Home: NextPage = ({ twitterOEmbedData }: HomeProps) => {
       </Head>
 
       <main className="grid container place-content-center">
-        <Scroller id="1" content={twitterOEmbedData}></Scroller>
+        <Scroller id="1" content={content}></Scroller>
       </main>
 
       <footer>

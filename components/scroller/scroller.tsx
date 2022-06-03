@@ -15,14 +15,20 @@ type ScrollerProps = {
 export const Scroller = ({ id, content }: ScrollerProps) => {
     const [scrollerContent, setScrollerContent] = useState<any[]>();
     const [isTwitterLoaded, setIsTwitterLoaded] = useState(true);
+    const [isYoutubeLoaded, setIsYoutubeLoaded] = useState(true);
     if (!scrollerContent) {
         setScrollerContent(content);
     }
 
+    const onYoutubeLoaded = () => {
+        setIsYoutubeLoaded(true);
+    };
+
     return (
         <>
-            {scrollerContent && scrollerContent.map((content, index) => {
-                return <ScrollerContent key={index} {...content} />;
+            <Script src="https://www.youtube.com/iframe_api" onLoad={onYoutubeLoaded}/>
+            {isYoutubeLoaded && scrollerContent && scrollerContent.map((content, index) => {
+                return <ScrollerContent id={index} {...content} />;
             })}
         </>
     );
