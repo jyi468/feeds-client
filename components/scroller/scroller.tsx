@@ -12,7 +12,7 @@ type ScrollerProps = {
     twitterOEmbedData: TwitterOEmbed[];
 };
 
-export const Scroller = ({ id, content, twitterOEmbedData }: ScrollerProps) => {
+export const Scroller = ({ id, content }: ScrollerProps) => {
     const [scrollerContent, setScrollerContent] = useState<any[]>();
     const [isTwitterLoaded, setIsTwitterLoaded] = useState(true);
     if (!scrollerContent) {

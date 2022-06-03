@@ -10,20 +10,37 @@ export async function getServerSideProps() {
   const tweets = await TwitterAPI.searchTweets('cool whip');
   const tweetUserNames: any = {};
   tweets.includes.users.forEach((user: any) => {
-      tweetUserNames[user.id] = user.username;
+    tweetUserNames[user.id] = user.username;
   });
   const twitterOEmbedData = await Promise.all(tweets.data.map(async (tweet: any) => {
-      return await TwitterAPI.embedTweet({id: tweet.id, username: tweetUserNames[tweet.author_id]});
+    return await TwitterAPI.embedTweet({ id: tweet.id, username: tweetUserNames[tweet.author_id] });
   }));
-  return { 
-      props: {
-          twitterOEmbedData,
-      }
+  return {
+    props: {
+      twitterOEmbedData,
+    }
   };
 }
 
-const Home: NextPage = ({twitterOEmbedData}) => {
-  const scrollerContent = [{ url: 'url1', type: ContentType.TWITTER }, { url: 'url2', type: ContentType.YOUTUBE }];
+type HomeProps = {
+  twitterOEmbedData: any[];
+}
+
+const Home: NextPage = ({ twitterOEmbedData }: HomeProps) => {
+  const twitterContent = twitterOEmbedData.map((tweetData: any) => {
+    tweetData.type = ContentType.TWITTER;
+    return tweetData;
+  });
+
+  const youtubeContent = [{
+    url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    type: ContentType.YOUTUBE,
+  }, {
+    url: 'https://www.youtube.com/watch?v=mC43pZkpTec',
+    type: ContentType.YOUTUBE
+  }];
+
+  const content = [...twitterContent, ...youtubeContent];
   return (
     <div>
       <Head>
@@ -33,7 +50,7 @@ const Home: NextPage = ({twitterOEmbedData}) => {
       </Head>
 
       <main className="grid container place-content-center">
-        <Scroller id={'1'} content={twitterOEmbedData}></Scroller>
+        <Scroller id="1" content={twitterOEmbedData}></Scroller>
       </main>
 
       <footer>

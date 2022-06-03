@@ -15,32 +15,36 @@ export enum ContentType {
 };
 
 export const ScrollerContent = ({ url, type, html }: ScrollerContentProps) => {
-    const twitterBlockRef = useRef();
-    const isOnScreen = useOnScreen(twitterBlockRef);
-    const [isLoaded, setIsLoaded] = useState(false);
-
-    useEffect(() => {
-        if (global.twttr.widgets && isOnScreen && !isLoaded) {
-            // TODO: Optimize Twitter events with Redux on load. 
-            // This includes the work to show a single spinner while anything on screen is still loading.
-            global.twttr.events.bind(
-                'rendered',
-                function (event) {
-                    if (twitterBlockRef.current?.firstChild === event.target) {
-                        setIsLoaded(true);
-                    }
-                }
-            );
-            global.twttr.widgets.load(twitterBlockRef.current);
-        }
-    }, [isOnScreen]);
+    const embedRef = useRef();
+    const isOnScreen = useOnScreen(embedRef);
+    const [isTwitterLoaded, setIsLoaded] = useState(false);
     
-    return (
-        <>
-            <div className={`${!isLoaded && 'invisible'}`}
-                ref={twitterBlockRef}
+    if (type === ContentType.TWITTER) {
+        useEffect(() => {
+            if (global.twttr.widgets && isOnScreen && !isTwitterLoaded) {
+                // TODO: Optimize Twitter events with Redux on load. 
+                // This includes the work to show a single spinner while anything on screen is still loading.
+                global.twttr.events.bind(
+                    'rendered',
+                    function (event) {
+                        if (embedRef.current?.firstChild === event.target) {
+                            setIsLoaded(true);
+                        }
+                    }
+                );
+                global.twttr.widgets.load(embedRef.current);
+            }
+        }, [isOnScreen]);
+    }
+
+    const renderContent = () => {
+        if (html) {
+            return (<div className={`${!isTwitterLoaded && 'invisible'}`}
+                ref={embedRef}
                 dangerouslySetInnerHTML={{ __html: html }}>
-            </div>
-        </>
-    )
+            </div>);
+        }
+    }
+    
+    return renderContent();
 }
