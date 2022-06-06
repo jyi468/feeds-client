@@ -11,6 +11,8 @@ import {
 } from "@apollo/client";
 import gql from 'graphql-tag';
 import Navbar from '../components/navigation/navbar';
+import { Provider } from 'react-redux';
+import { store } from '../state/store';
 
 
 // Connect to your MongoDB Realm app
@@ -84,10 +86,12 @@ const client = new ApolloClient({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ApolloProvider client={client}>
-      <Navbar/>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <Provider store={store}>
+      <ApolloProvider client={client}>
+        <Navbar />
+        <Component {...pageProps} />
+      </ApolloProvider>
+    </Provider>
   );
 }
 

@@ -5,6 +5,7 @@ import styles from '../styles/Home.module.css'
 import { Scroller } from '../components/scroller/scroller'
 import { ContentType, ScrollerContentProps } from '../components/scroller/scrollerContent'
 import TwitterAPI from '../utils/twitterApi'
+import { Counter } from '../components/counter/counter'
 
 export async function getServerSideProps() {
   const tweets = await TwitterAPI.searchTweets('cool whip');
@@ -51,6 +52,7 @@ const Home: NextPage = ({ twitterOEmbedData }: HomeProps) => {
       </Head>
 
       <main className="grid container place-content-center">
+        <Counter></Counter>
         <Scroller id="1" content={content}></Scroller>
       </main>
 
