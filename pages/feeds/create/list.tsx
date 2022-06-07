@@ -32,7 +32,7 @@ interface ListRow {
 const CreateList = ({ data }: CreateListProps) => {
     const mockRows: ListRow[] = [
         { isChecked: true, url: 'https://www.google.com' },
-        { isChecked: false, url: 'https://www.yahoo.com' },
+        { isChecked: false, url: 'https://www.youtube.com/watch?v=o7Tikr2fp-c' },
         { isChecked: true, url: 'https://www.facebook.com' },
     ]
     data = mockRows;

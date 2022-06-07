@@ -24,9 +24,14 @@ export const Scroller = ({ id, content }: ScrollerProps) => {
         setIsYoutubeLoaded(true);
     };
 
+    const onTwitterLoaded = () => {
+        setIsTwitterLoaded(true);
+    };
+
     return (
         <>
-            <Script src="https://www.youtube.com/iframe_api" onLoad={onYoutubeLoaded}/>
+            <Script src="/scripts/widgets.js" onLoad={onTwitterLoaded}></Script>
+            <Script src="https://www.youtube.com/iframe_api" onLoad={onYoutubeLoaded}></Script>
             {isYoutubeLoaded && scrollerContent && scrollerContent.map((content, index) => {
                 return <ScrollerContent id={index} {...content} />;
             })}

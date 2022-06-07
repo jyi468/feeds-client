@@ -47,7 +47,10 @@ export const ScrollerContent = ({ id, url, type, html }: ScrollerContentProps) =
             switch (type) {
                 case ContentType.YOUTUBE:
                     // TODO: Add Redux for APIs loaded.
-                    return <iframe id={id} src={url}/>;
+                    if (!url) return;
+                    const videoId = url.match(/(?<=watch\?v\=).*$/); // Use Positive lookahead to get the video id.
+                    const baseUrl = 'https://www.youtube.com/embed/';
+                    return <iframe id={id} src={`${baseUrl}${videoId}`}/>;
             }
         }
     }
