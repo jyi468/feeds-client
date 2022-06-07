@@ -50,6 +50,7 @@ export const ScrollerContent = ({ id, url, type, html }: ScrollerContentProps) =
                     if (!url) return;
                     const videoId = url.match(/(?<=watch\?v\=).*$/); // Use Positive lookahead to get the video id.
                     const baseUrl = 'https://www.youtube.com/embed/';
+                    // TODO: Add embeds for clips. Need original video id and clip id (both).
                     return <iframe id={id} src={`${baseUrl}${videoId}`}/>;
             }
         }
