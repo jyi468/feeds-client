@@ -7,18 +7,12 @@ class MyDocument extends Document {
         return initialProps;
     }
 
-    onYoutubeLoaded = () => {
-        console.log('youtube loaded');
-    }
-
     render() {
         return (
             // TODO: Add theme selector
             <Html data-theme="light">
                 <Head>
-                    <script src="/scripts/widgets.js"></script>
                 </Head>
-                <Script src="https://www.youtube.com/iframe_api" onLoad={this.onYoutubeLoaded}/>
                 <body>
                     <Main />
                     <NextScript />

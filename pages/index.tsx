@@ -28,15 +28,26 @@ type HomeProps = {
 }
 
 const Home: NextPage = ({ twitterOEmbedData }: HomeProps) => {
-  // const twitterContent = twitterOEmbedData.map((tweetData: any) => {
-  //   tweetData.type = ContentType.TWITTER;
-  //   return tweetData;
-  // });
-  const twitterContent: ScrollerContentProps[] = [];
+  const twitterContent = twitterOEmbedData.map((tweetData: any) => {
+    tweetData.type = ContentType.TWITTER;
+    return tweetData;
+  });
+  // const twitterContent: ScrollerContentProps[] = [];
 
   const youtubeContent = [{
     url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     type: ContentType.YOUTUBE,
+  }, {
+    url: 'https://www.youtube.com/watch?v=mC43pZkpTec',
+    type: ContentType.YOUTUBE
+  },
+  {
+    url: 'https://www.youtube.com/watch?v=mC43pZkpTec',
+    type: ContentType.YOUTUBE
+  },
+  {
+    url: 'https://www.youtube.com/watch?v=mC43pZkpTec',
+    type: ContentType.YOUTUBE
   }, {
     url: 'https://www.youtube.com/watch?v=mC43pZkpTec',
     type: ContentType.YOUTUBE
@@ -52,7 +63,6 @@ const Home: NextPage = ({ twitterOEmbedData }: HomeProps) => {
       </Head>
 
       <main className="grid container place-content-center">
-        <Counter></Counter>
         <Scroller id="1" content={content}></Scroller>
       </main>
 
