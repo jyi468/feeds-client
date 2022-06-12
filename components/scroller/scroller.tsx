@@ -6,13 +6,11 @@ import TwitterAPI from '../../utils/twitterApi';
 
 import { ScrollerContentProps, ScrollerContent } from './scrollerContent';
 
-type ScrollerProps = {
-    id: string;
+export type ScrollerProps = {
     content: ScrollerContentProps[];
-    twitterOEmbedData: TwitterOEmbed[];
 };
 
-export const Scroller = ({ id, content }: ScrollerProps) => {
+export const Scroller = ({ content }: ScrollerProps) => {
     const [scrollerContent, setScrollerContent] = useState<any[]>();
     const [isTwitterLoaded, setIsTwitterLoaded] = useState(true);
     const [isYoutubeLoaded, setIsYoutubeLoaded] = useState(true);

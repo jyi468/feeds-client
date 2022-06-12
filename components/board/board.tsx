@@ -5,12 +5,11 @@ import { TweetResponse } from '../../types/twitter';
 
 import { BoardContentProps, BoardContent } from './boardContent';
 
-type BoardProps = {
-    id: string;
+export type BoardProps = {
     content: BoardContentProps[];
 };
 
-export const Board = ({ id, content }: BoardProps) => {
+export const Board = ({ content }: BoardProps) => {
     const [boardContent, setBoardContent] = useState<any[]>();
     const [isTwitterLoaded, setIsTwitterLoaded] = useState(true);
 
