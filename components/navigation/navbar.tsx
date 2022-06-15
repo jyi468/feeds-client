@@ -7,7 +7,6 @@ interface NavbarProps {
 }
 
 const Navbar = ({ user }: NavbarProps) => {
-    user = {};
     return (
         <div className="sticky top-0 shadow-md">
             <div className="navbar bg-base-100">
@@ -60,7 +59,9 @@ const Navbar = ({ user }: NavbarProps) => {
                             </div>
                         </div>
                         :
-                        <a className="btn">Get Started</a>}
+                        <Link href="/login">
+                            <a className="btn">Get Started</a>
+                        </Link>}
                 </div>
             </div>
         </div>
