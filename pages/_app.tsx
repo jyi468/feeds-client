@@ -84,6 +84,17 @@ const client = new ApolloClient({
 //   })
 //   .then(result => console.log(JSON.stringify(result)));
 
+client.query({
+  query: gql`
+    query {
+      contents {
+        _id
+        url
+      }
+    }
+    `
+}).then(result => console.log(JSON.stringify(result)));;
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
@@ -96,4 +107,4 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default MyApp
-export {app}
+export { app }
