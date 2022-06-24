@@ -15,7 +15,7 @@ import { Provider } from 'react-redux';
 import { store } from '../state/store';
 
 
-// Connect to your MongoDB Realm app
+// Connect to your MongoDB Realm app 
 // const app = new Realm.App(process.env.REALM_APP_ID);
 const app = new Realm.App('application-0-usrtl');
 console.log('-----------------' + typeof process.env.NEXT_PUBLIC_REALM_API_KEY);
