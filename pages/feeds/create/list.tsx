@@ -1,5 +1,6 @@
+import { gql, useMutation } from '@apollo/client';
 import dynamic from 'next/dynamic';
-import { useState, } from 'react';
+import { SyntheticEvent, useState, } from 'react';
 
 const containerSelector = 'tbody';
 
@@ -29,6 +30,22 @@ interface ListRow {
     url: string,
 }
 
+type ContentInsertInput = {
+    url: string
+}
+
+type InsertManyPayload = {
+    insertedIds: string[]
+  }
+
+const CREATE_CONTENTS = gql`
+    mutation InsertManyContents($data: [ContentInsertInput!]!) {
+        insertManyContents(data: $data) {
+            insertedIds
+        }
+    }
+`
+
 const CreateList = ({ data }: CreateListProps) => {
     const mockRows: ListRow[] = [
         { isChecked: false, url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
@@ -38,6 +55,7 @@ const CreateList = ({ data }: CreateListProps) => {
     data = mockRows;
     const [rows, setRows] = useState(data ?? []);
     const [isAllChecked, setIsAllChecked] = useState(false);
+    const [createContents, {createdContentData, error}] = useMutation(CREATE_CONTENTS)
 
     const handleOnAllChecked = (event: any) => {
         setIsAllChecked(event.target.checked);
@@ -55,8 +73,19 @@ const CreateList = ({ data }: CreateListProps) => {
     const handleOnInputChange = () => {
         setRows([...rows]);
     };
+
+    const handleOnSubmit = (event: SyntheticEvent) => {
+        event.preventDefault();
+        const payload = {
+            variables: {
+                data: mockRows.map((row) => ({url: row.url}))
+            }
+        }
+        createContents(payload);
+    };
+
     return (
-        <div>
+        <form onSubmit={handleOnSubmit}>
             <SortableDynamic></SortableDynamic>
             <div className="overflow-x-auto w-full">
                 <table className="table w-full">
@@ -106,10 +135,10 @@ const CreateList = ({ data }: CreateListProps) => {
                 <div>
                     <button className="btn mx-1">Swap</button>
                     <button className="btn mx-1">Preview</button>
-                    <button className="btn mx-1 btn-primary">Confirm</button>
+                    <button className="btn mx-1 btn-primary" type="submit">Confirm</button>
                 </div>
             </div>
-        </div>
+        </form>
     );
 }
 
