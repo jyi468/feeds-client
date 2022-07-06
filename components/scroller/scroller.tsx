@@ -20,8 +20,8 @@ const GET_CONTENTS = gql`
 `
 
 const CREATE_CONTENT = gql`
-    mutation InsertOneContent($data: ContentInsertInput!) {
-        insertOneContent(data: $data) {
+    mutation InsertOneContent($url: String) {
+        insertOneContent(data: ContentInsertInput) {
             _id
             url
         }
@@ -54,7 +54,7 @@ export const Scroller = ({ content }: ScrollerProps) => {
     };
 
     const handleOnClick = () => {
-        addContent();
+        getContents();
     }
 
     const handleOnChange = (event: any) => {
@@ -69,7 +69,7 @@ export const Scroller = ({ content }: ScrollerProps) => {
         <>
             <Script src="/scripts/widgets.js" onLoad={onTwitterLoaded}></Script>
             <Script src="https://www.youtube.com/iframe_api" onLoad={onYoutubeLoaded}></Script>
-            <button className="btn btn-primary" onClick={handleOnClick}>Create Content</button>
+            {/* <button className="btn btn-primary" onClick={handleOnClick}>Create Content</button> */}
             <input type="text" value={url} onChange={handleOnChange}></input>
             {isYoutubeLoaded && scrollerContent && scrollerContent.map((content, index) => {
                 return <ScrollerContent id={index} {...content} />;
