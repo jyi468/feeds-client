@@ -6,6 +6,7 @@ import { Scroller } from '../components/scroller/scroller'
 import { ContentType, ScrollerContentProps } from '../components/scroller/scrollerContent'
 import TwitterAPI from '../utils/twitterApi'
 import { Counter } from '../components/counter/counter'
+import { useQuery, useLazyQuery, gql, useMutation } from '@apollo/client';
 
 export async function getServerSideProps() {
   const tweets = await TwitterAPI.searchTweets('cool whip');
@@ -23,11 +24,41 @@ export async function getServerSideProps() {
   };
 }
 
+export type FeedQueryInput = {
+  _id: string
+}
+
+const GET_FEED = gql`
+query feed($query: FeedQueryInput) {
+  feed (query: $query) {
+    _id
+    scroller
+  }
+}
+`
+
+export const CREATE_FEED = gql`
+    mutation InsertOneContent($url: String) {
+        insertOneContent(data: ContentInsertInput) {
+            _id
+            url
+        }
+    }
+`
+
 type HomeProps = {
   twitterOEmbedData: any[];
 }
 
 const Home: NextPage = ({ twitterOEmbedData }: HomeProps) => {
+  const { error, loading, data } = useQuery(GET_FEED, {
+    variables: {
+      query: {
+        '_id': '62c5ef4a0bed6788676a230e'
+      }
+    }
+  });
+
   const twitterContent = twitterOEmbedData.map((tweetData: any) => {
     tweetData.type = ContentType.TWITTER;
     return tweetData;
@@ -53,7 +84,21 @@ const Home: NextPage = ({ twitterOEmbedData }: HomeProps) => {
     type: ContentType.YOUTUBE
   }];
 
-  const content = [...twitterContent, ...youtubeContent];
+  // const content = [...twitterContent, ...youtubeContent];
+
+  const renderFeed = () => {
+    if (loading) {
+      console.log('Loading');
+    }
+    if (error) {
+      console.log(error)
+    }
+    if (data?.feed) {
+      console.log(data.feed.scroller);
+      return data.feed.scroller;
+    }
+  }
+
   return (
     <div>
       <Head>
@@ -63,7 +108,7 @@ const Home: NextPage = ({ twitterOEmbedData }: HomeProps) => {
       </Head>
 
       <main className="grid container place-content-center">
-        <Scroller id="1" content={content}></Scroller>
+        {renderFeed()}
       </main>
 
       <footer>
